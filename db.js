@@ -5,7 +5,9 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const dbPath = path.join(__dirname, 'db.sqlite');
+const defaultDbPath = path.join(__dirname, 'db.sqlite');
+const dbPath = process.env.DB_PATH || (process.env.VERCEL ? path.join(os.tmpdir(), 'db.sqlite') : defaultDbPath);
+
 const DB = new Database(dbPath);
 
 DB.pragma("foreign_keys = ON");

@@ -3,6 +3,7 @@ import express, { response } from "express";
 import cors from "cors";
 import fs from "fs";
 import path from "path";
+import { fileURLToPath } from 'url';
 import { marked } from "marked";
 import matter from "gray-matter";
 import bcrypt from "bcryptjs";
@@ -15,6 +16,9 @@ const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "jwt_secret";
 const SALT_ROUNDS = 3;
 const SALT = bcrypt.genSaltSync(SALT_ROUNDS);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Permission for frontend to access backend
 app.use(
@@ -180,7 +184,7 @@ function auth(request, response, next) {
 	const [, token] = header.split(" ");
 
 	try {
-		const payload = jwt.verify(token, process.env.JWT_SECRET);
+		const payload = jwt.verify(token, JWT_SECRET);
 		request.user = payload;
 		next();
 	} catch (error) {
@@ -189,6 +193,10 @@ function auth(request, response, next) {
 }
 
 // Run app on PORT
-app.listen(PORT, () => {
-	console.log(`Server is running on http://localhost:${PORT}`);
-});
+export default app;
+
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
