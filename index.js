@@ -19,6 +19,7 @@ const SALT = bcrypt.genSaltSync(SALT_ROUNDS);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const lessonsDir = path.join(__dirnamem, "src", "lessons");
 
 // Permission for frontend to access backend
 app.use(
@@ -36,7 +37,6 @@ app.use(
 app.use(express.json());
 
 // Path to lessons MD
-const lessonsDir = path.resolve("./src/lessons");
 
 // API Routes
 
