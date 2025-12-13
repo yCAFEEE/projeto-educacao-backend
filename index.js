@@ -22,7 +22,6 @@ app.use(
 		origin: [
 			process.env.FRONTEND_URL || "http://localhost:5173", 
 			"http://127.0.0.1:5173",
-			"https://projeto-educacao-backend.vercel.app/"
 		],
 		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 		allowedHeaders: ['Content-Type', 'Authorization']
@@ -33,7 +32,7 @@ app.use(
 app.use(express.json());
 
 // Path to lessons MD
-const lessonsDir = path.resolve("./lessons");
+const lessonsDir = path.resolve("./src/lessons");
 
 // API Routes
 
