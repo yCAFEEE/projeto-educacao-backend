@@ -19,24 +19,24 @@ const SALT = bcrypt.genSaltSync(SALT_ROUNDS);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const lessonsDir = path.join(__dirnamem, "src", "lessons");
+
+// Path to lessons MD
+const lessonsDir = path.resolve(__dirname, 'src', 'lessons');
 
 // Permission for frontend to access backend
 app.use(
 	cors({
 		origin: [
 			process.env.FRONTEND_URL || "http://localhost:5173", 
-			"http://127.0.0.1:5173",
+			"http://127.0.0.1:5173"
 		],
-		methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+		methods: ["GET", "POST"],
 		allowedHeaders: ['Content-Type', 'Authorization']
 	})
 );
 
 // Allows JSON for requests
 app.use(express.json());
-
-// Path to lessons MD
 
 // API Routes
 
