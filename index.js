@@ -27,7 +27,8 @@ const lessonsDir = path.resolve(__dirname, 'src', 'lessons');
 app.use(
 	cors({
 		origin: [
-			process.env.FRONTEND_URL || "http://localhost:5173", 
+			process.env.FRONTEND_URL,
+			"http://localhost:5173", 
 			"http://127.0.0.1:5173"
 		],
 		methods: ["GET", "POST"],
@@ -184,7 +185,7 @@ function auth(request, response, next) {
 	const [, token] = header.split(" ");
 
 	try {
-		const payload = jwt.verify(token, JWT_SECRET);
+		const payload = jwt.verify(token, process.env.JWT_SECRET);
 		request.user = payload;
 		next();
 	} catch (error) {
