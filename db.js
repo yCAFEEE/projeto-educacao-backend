@@ -22,4 +22,25 @@ DB.prepare(`
     )
 `).run();
 
+DB.prepare(`
+    CREATE TABLE IF NOT EXISTS Progresso (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id_usuario INTEGER NOT NULL,
+        conteudo TEXT NOT NULL,
+        assunto TEXT NOT NULL,
+        progresso INTEGER NOT NULL DEFAULT 0,
+        data_conclusao TEXT,
+        FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
+    )
+`).run();
+
+DB.prepare(`
+    CREATE TABLE IF NOT EXISTS Acessos (
+        id_usuario INTEGER NOT NULL,
+        conteudo TEXT NOT NULL,
+        data_acesso TEXT DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (id_usuario) REFERENCES Usuarios(id)
+    )
+`).run();
+
 export default DB;
