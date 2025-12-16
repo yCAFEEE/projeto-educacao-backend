@@ -139,7 +139,7 @@ app.post("/auth/login", async (request, response) => {
 		}
 
 		const token = jwt.sign(
-			{ id: userData.id, user: userData.usuario },
+			{ id: userData._id, user: userData.usuario },
 			JWT_SECRET,
 			// { expiresIn: "30d" }
 		);
@@ -147,7 +147,7 @@ app.post("/auth/login", async (request, response) => {
 		return response.json({
 			token,
 			userInfo: {
-				id: userData.id,
+				id: userData._id,
 				user: userData.usuario,
 				email: userData.email
 			}
@@ -160,10 +160,14 @@ app.post("/auth/login", async (request, response) => {
 
 // Confirm Login route
 app.get("/auth/me", auth, async (request, response) => {
-	const userInfo = await User.findById(request.user.id, 'usuario email pontos').lean();
-	if(!userInfo) return response.status(404).json({ ok: false });
-
-	return response.json({ ok: true, userInfo });
+	try {
+		const userInfo = await User.findById(request.user.id, 'usuario email pontos');
+		if (!userInfo) return response.status(404).json({ ok: false });
+		return response.json({ ok: true, userInfo });
+	} catch (err) {
+		console.error(err);
+		return response.status(500).json({ error: 'Erro interno' });
+	}
 })
 
 function auth(request, response, next) {
