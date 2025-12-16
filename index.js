@@ -9,7 +9,8 @@ import matter from "gray-matter";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
-import DB from "./db.js";
+import mongoose from "./db.js";
+import User from './src/models/User.js'
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -66,7 +67,7 @@ app.get("/api/lessons/:id", (request, response) => {
 // Authentication routes
 
 // Register route
-app.post("/auth/register", (request, response) => {
+app.post("/auth/register", async (request, response) => {
 	const { user, email, password } = request.body;
 
 	// Validade all data
@@ -100,22 +101,15 @@ app.post("/auth/register", (request, response) => {
 
 	try {
 		// Check for already existing user and email in DB
-		const isRegisteredUser = DB.prepare(`SELECT * FROM Usuarios WHERE usuario = ?`).get(user);
+		const isRegisteredUser = await User.findOne({ usuario: user });
 		if (isRegisteredUser) return response.status(400).json({ error: "Usuário já cadastrado." });
 
-		const isRegisteredEmail = DB.prepare(`SELECT * FROM Usuarios WHERE email = ?`).get(email);
+		const isRegisteredEmail = await User.findOne({ email });
 		if (isRegisteredEmail) return response.status(400).json({ error: "Email já cadastrado." });
 
 		const hashedPassword = bcrypt.hashSync(password, SALT);
-
-		const stmt = DB.prepare(`
-			INSERT INTO Usuarios (email, usuario, senha)
-			VALUES (?, ?, ?)
-		`);
-
-		const result = stmt.run(email, user, hashedPassword);
-
-		return response.json({ id: result.lastInsertRowid });
+		const newUser = await User.create({ email, usuario: user, senha: hashedPassword });
+		return response.json({ id: newUser._id });
 	} catch (error) {
 		console.error(error);
 		return response.status(500).json({ error: "Erro interno no servidor." });
@@ -123,7 +117,7 @@ app.post("/auth/register", (request, response) => {
 });
 
 // Login route
-app.post("/auth/login", (request, response) => {
+app.post("/auth/login", async (request, response) => {
 	const { auth, password } = request.body;
 
 	// Validate data
@@ -132,10 +126,7 @@ app.post("/auth/login", (request, response) => {
 	}
 
 	try {
-		const userData = DB.prepare(`
-			SELECT * FROM Usuarios
-			WHERE usuario = ? OR email = ?	
-		`).get(auth, auth);
+		const userData = await User.findOne({ $or: [{ usuario: auth }, { email: auth }] }).lean();
 
 		if (!userData) {
 			return response.status(401).json({ error: "Senha ou usuário/email incorreto" });
@@ -168,11 +159,8 @@ app.post("/auth/login", (request, response) => {
 });
 
 // Confirm Login route
-app.get("/auth/me", auth, (request, response) => {
-	const userInfo = DB.prepare(`\
-		SELECT id, usuario, email, pontos FROM Usuarios
-		WHERE id = ?
-	`).get(request.user.id);
+app.get("/auth/me", auth, async (request, response) => {
+	const userInfo = await User.findById(request.user.id, 'usuario email pontos');
 
 	response.json({ ok: true, userInfo });
 })
