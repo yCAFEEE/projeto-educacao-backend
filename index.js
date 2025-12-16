@@ -160,9 +160,10 @@ app.post("/auth/login", async (request, response) => {
 
 // Confirm Login route
 app.get("/auth/me", auth, async (request, response) => {
-	const userInfo = await User.findById(request.user.id, 'usuario email pontos');
+	const userInfo = await User.findById(request.user.id, 'usuario email pontos').lean();
+	if(!userInfo) return response.status(404).json({ ok: false });
 
-	response.json({ ok: true, userInfo });
+	return response.json({ ok: true, userInfo });
 })
 
 function auth(request, response, next) {
