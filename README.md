@@ -71,12 +71,14 @@ Formulário para alterar dados de um exercício já existente.
   * `DELETE /exercicio/{id}` - Exclui o exercício.
 
 #### Tela de Perfil do Usuário
-Visualização dos dados cadastrais e progresso do aluno.
+Visualização dos dados cadastrais do aluno ou do professor.
 * **Imagem da Tela:**
   ![Tela perfil](https://github.com/yCAFEEE/projeto-educacao-backend/blob/main/images/tela%20de%20perfil.png)
 * **Rotas REST Relacionadas:**
   * `GET /aluno/search/{id}` - Busca os dados de um aluno específico para exibir na tela.
   * `DELETE /aluno/{id}` - Exclui a conta do aluno.
+  * `GET /professor/search/{id}` - Busca os dados de um professor específico para exibir na tela.
+  * `DELETE /professor/{id}` - Exclui a conta do professor.
 
 #### Tela de Edição de Dados do Perfil
 Formulário para o usuário atualizar suas informações pessoais.
@@ -84,6 +86,7 @@ Formulário para o usuário atualizar suas informações pessoais.
   ![Tela edição perfil](https://github.com/yCAFEEE/projeto-educacao-backend/blob/main/images/editar%20dados%20do%20usu%C3%A1rio.png)
 * **Rotas REST Relacionadas:**
   * `PUT /aluno/{id}` - Atualiza os dados do aluno no banco de dados.
+  * `PUT /professor/{id}` - Atualiza os dados do professor no banco de dados.
 
 ## Para inicialização da aplicação, é necessário
 ```
