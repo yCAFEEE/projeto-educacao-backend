@@ -48,4 +48,6 @@ Para iniciar o _server_, use `npm start`.
 
 ## Utilização
 Na aplicação, é utilizado o Browsable API Swagger para facilitar requisições no banco de dados. Para acessar o Swagger, basta acessar o caminho `http://localhost:3000/api-docs` para teste local ou `https://projeto-educacao-backend.vercel.app/api-docs` para testes usando o Vercel. \
-**Obs.:** o MongoDB da aplicação pode estar desativado por conta de inatividade. Nesse caso, contate um dos colaboradores para que ele seja novamente ativado.
+**Obs.:** o cluster MongoDB pode estar desativado por conta de inatividade, fazendo com que a aplicação não funcione. Nesse caso, contate um dos colaboradores para que ele seja novamente ativado.
+![Tela swagger](https://github.com/yCAFEEE/projeto-educacao-backend/blob/main/images/swagger.png)
+Tela inicial do Swagger
