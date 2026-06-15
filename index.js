@@ -3,42 +3,84 @@ import express, { response } from "express";
 import cors from "cors";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from 'url';
 import { marked } from "marked";
 import matter from "gray-matter";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import swaggerUi from "swagger-ui-express";
 
-import mongoose from "./db.js";
-import User from './src/models/User.js'
+import connectDB from "./db.js";
+
+import Aluno from "./persistencelayer/models/Aluno.js";
+import AlunoRoutesClass from "./routes/AlunoRoutes.js";
+import Aula from "./persistencelayer/models/Aula.js";
+import AulaRoutesClass from "./routes/AulaRoutes.js";
+import Exercicio from "./persistencelayer/models/Exercicio.js";
+import ExercicioRoutesClass from "./routes/ExercicioRoutes.js";
+import Materia from "./persistencelayer/models/Materia.js";
+import MateriaRoutesClass from "./routes/MateriaRoutes.js";
+import Professor from "./persistencelayer/models/Professor.js";
+import ProfessorRoutesClass from "./routes/ProfessorRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET || "jwt_secret";
 const SALT_ROUNDS = 3;
 const SALT = bcrypt.genSaltSync(SALT_ROUNDS);
+const swaggerDocument = JSON.parse(fs.readFileSync(path.resolve("./swagger.json"), "utf8"));
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Path to lessons MD
-const lessonsDir = path.resolve(__dirname, 'src', 'lessons');
+connectDB();
 
 // Permission for frontend to access backend
 app.use(
 	cors({
 		origin: [
-			process.env.FRONTEND_URL,
-			"http://localhost:5173", 
+			process.env.FRONTEND_URL || "http://localhost:5173", 
 			"http://127.0.0.1:5173"
 		],
-		methods: ["GET", "POST"],
+		methods: ["GET", "POST", "PUT", "DELETE"],
 		allowedHeaders: ['Content-Type', 'Authorization']
 	})
 );
 
 // Allows JSON for requests
 app.use(express.json());
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// Instanciar metodos get, post, put e delete das rotas
+const AlunoRoutes = new AlunoRoutesClass(app);
+AlunoRoutes.get();
+AlunoRoutes.post();
+AlunoRoutes.put();
+AlunoRoutes.delete();
+
+const AulaRoutes = new AulaRoutesClass(app);
+AulaRoutes.get();
+AulaRoutes.post();
+AulaRoutes.put();
+AulaRoutes.delete();
+
+const ExercicioRoutes = new ExercicioRoutesClass(app);
+ExercicioRoutes.get();
+ExercicioRoutes.post();
+ExercicioRoutes.put();
+ExercicioRoutes.delete();
+
+const MateriaRoutes = new MateriaRoutesClass(app);
+MateriaRoutes.get();
+MateriaRoutes.post();
+MateriaRoutes.put();
+MateriaRoutes.delete();
+
+const ProfessorRoutes = new ProfessorRoutesClass(app);
+ProfessorRoutes.get();
+ProfessorRoutes.post();
+ProfessorRoutes.put();
+ProfessorRoutes.delete();
+
+// Path to lessons MD
+const lessonsDir = path.resolve("./lessons");
 
 // API Routes
 
@@ -101,15 +143,24 @@ app.post("/auth/register", async (request, response) => {
 
 	try {
 		// Check for already existing user and email in DB
-		const isRegisteredUser = await User.findOne({ usuario: user });
+		const isRegisteredUser = await Aluno.findOne({ usuario: user });
 		if (isRegisteredUser) return response.status(400).json({ error: "Usuário já cadastrado." });
 
-		const isRegisteredEmail = await User.findOne({ email });
+		const isRegisteredEmail = await Aluno.findOne({ email: email });
 		if (isRegisteredEmail) return response.status(400).json({ error: "Email já cadastrado." });
 
 		const hashedPassword = bcrypt.hashSync(password, SALT);
-		const newUser = await User.create({ email, usuario: user, senha: hashedPassword });
-		return response.json({ id: newUser._id });
+
+		const novoAluno = new Aluno({
+			nome: user,
+			usuario: user,
+			email: email,
+			senha: hashedPassword
+		});
+
+		const result = await novoAluno.save();
+
+		return response.json({ id: result._id });
 	} catch (error) {
 		console.error(error);
 		return response.status(500).json({ error: "Erro interno no servidor." });
@@ -126,7 +177,9 @@ app.post("/auth/login", async (request, response) => {
 	}
 
 	try {
-		const userData = await User.findOne({ $or: [{ usuario: auth }, { email: auth }] }).lean();
+		const userData = await Aluno.findOne({
+			$or: [{ usuario: auth }, { email: auth }]
+		});
 
 		if (!userData) {
 			return response.status(401).json({ error: "Senha ou usuário/email incorreto" });
@@ -160,14 +213,11 @@ app.post("/auth/login", async (request, response) => {
 
 // Confirm Login route
 app.get("/auth/me", auth, async (request, response) => {
-	try {
-		const userInfo = await User.findById(request.user.id, 'usuario email pontos');
-		if (!userInfo) return response.status(404).json({ ok: false });
-		return response.json({ ok: true, userInfo });
-	} catch (err) {
-		console.error(err);
-		return response.status(500).json({ error: 'Erro interno' });
-	}
+	const userInfo = await Aluno.findById(request.user.id).select("usuario email");
+
+	if (!userInfo) return response.status(404).json({ error: "Usuário não encontrado" });
+
+	response.json({ ok: true, userInfo });
 })
 
 function auth(request, response, next) {
@@ -186,11 +236,15 @@ function auth(request, response, next) {
 	}
 }
 
-// Run app on PORT
-export default app;
-
+/* 
 if (!process.env.VERCEL) {
     app.listen(PORT, () => {
         console.log(`Server is running on http://localhost:${PORT}`);
     });
-}
+} 
+*/
+
+// Run app on PORT
+app.listen(PORT, () => {
+	console.log(`Server is running on http://localhost:${PORT}`);
+});

@@ -1,5 +1,5 @@
 {
-  "name": "projeto-educacao-backend",
+  "name": "server",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
@@ -20,7 +20,9 @@
     "gray-matter": "^4.0.3",
     "jsonwebtoken": "^9.0.2",
     "marked": "^16.4.0",
-    "mongoose": "^9.0.1",
-    "nodemon": "^3.1.11"
+    "mongodb": "^7.3.0",
+    "mongoose": "^9.7.0",
+    "nodemon": "^3.1.11",
+    "swagger-ui-express": "^5.0.1"
   }
 }

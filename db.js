@@ -1,9 +1,14 @@
-import mongoose from 'mongoose';
+import Database from 'better-sqlite3';
+import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGODB_URI;
+const connectDB = async () =>{
+    try{
+        const mongoURI = process.env.MONGODB_URI;
+        await mongoose.connect(mongoURI);
+        console.log("MongoDB conectado");
+    }catch(err){
+        console.log("Erro ao conectar no MongoDB: ", err)
+    }
+};
 
-mongoose.connect(MONGO_URI)
-	.then(() => console.log("MongoDB conectado"))
-	.catch(err => console.error("Erro ao conectar no MongoDB:", err));
-
-export default mongoose;
+export default connectDB;

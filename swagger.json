@@ -1,0 +1,286 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "API projeto-educacao", "version": "1.0.0" },
+  "servers": [{ "url": "http://localhost:3000" }],
+  "paths": {
+    "/aluno": {
+      "get": {
+        "tags": ["Aluno"],
+        "summary": "Consultar todos os alunos",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Aluno"],
+        "summary": "Salvar um novo aluno",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string" }, 
+                  "usuario": { "type": "string" },
+                  "email": { "type": "string" },
+                  "senha": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/aluno/search/{id}": {
+      "get": {
+        "tags": ["Aluno"],
+        "summary": "Consultar aluno pelo ID",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/aluno/{id}": {
+      "put": {
+        "tags": ["Aluno"],
+        "summary": "Alterar dados do aluno",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "type": "object" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Aluno"],
+        "summary": "Deletar um aluno",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/aula": {
+      "get": {
+        "tags": ["Aula"],
+        "summary": "Consultar todas as aulas",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Aula"],
+        "summary": "Salvar uma nova aula",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { 
+                "schema": { 
+                    "type": "object",
+                    "properties": {
+                      "titulo": { "type": "string" },
+                      "desc": { "type": "string" },
+                      "url": { "type": "string" },
+                      "explicacao": { "type": "string" },
+                      "exercicios": { "type": "array", "items": { "type": "string" } }
+                    }
+                } 
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/aula/search/{id}": {
+      "get": {
+        "tags": ["Aula"],
+        "summary": "Consultar aula pelo ID",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/aula/{id}": {
+      "put": {
+        "tags": ["Aula"],
+        "summary": "Alterar dados da aula",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "type": "object" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Aula"],
+        "summary": "Deletar uma aula",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/exercicio": {
+      "get": {
+        "tags": ["Exercício"],
+        "summary": "Consultar todos os exercícios",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Exercício"],
+        "summary": "Salvar um novo exercício",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { 
+                "schema": { 
+                    "type": "object",
+                    "properties": {
+                      "titulo": { "type": "string" },
+                      "desc": { "type": "string" },
+                      "enunciado": { "type": "string" },
+                      "alternativas": { "type": "array", "items": { "type": "string" } }
+                    }
+                } 
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/exercicio/search/{id}": {
+      "get": {
+        "tags": ["Exercício"],
+        "summary": "Consultar exercício pelo ID",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/exercicio/{id}": {
+      "put": {
+        "tags": ["Exercício"],
+        "summary": "Alterar dados do exercício",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "type": "object" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Exercício"],
+        "summary": "Deletar um exercício",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/materia": {
+      "get": {
+        "tags": ["Matéria"],
+        "summary": "Consultar todas as matérias",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Matéria"],
+        "summary": "Salvar uma nova matéria",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { 
+                "schema": { 
+                    "type": "object",
+                    "properties": {
+                      "nome": { "type": "string" },
+                      "aulas": { "type": "array", "items": { "type": "string" } }
+                    }
+                } 
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/materia/search/{id}": {
+      "get": {
+        "tags": ["Matéria"],
+        "summary": "Consultar matéria pelo ID",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/materia/{id}": {
+      "put": {
+        "tags": ["Matéria"],
+        "summary": "Alterar dados da matéria",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "type": "object" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Matéria"],
+        "summary": "Deletar uma matéria",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/professor": {
+      "get": {
+        "tags": ["Professor"],
+        "summary": "Consultar todos os professores",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "tags": ["Professor"],
+        "summary": "Salvar um novo professor",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nome": { "type": "string" }, 
+                  "usuario": { "type": "string" },
+                  "email": { "type": "string" },
+                  "senha": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/professor/search/{id}": {
+      "get": {
+        "tags": ["Professor"],
+        "summary": "Consultar professor pelo ID",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/professor/{id}": {
+      "put": {
+        "tags": ["Professor"],
+        "summary": "Alterar dados do professor",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": { "schema": { "type": "object" } }
+          }
+        },
+        "responses": { "200": { "description": "OK" } }
+      },
+      "delete": {
+        "tags": ["Professor"],
+        "summary": "Deletar um professor",
+        "parameters": [{ "name": "id", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}
