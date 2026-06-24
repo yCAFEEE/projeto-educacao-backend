@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": { "title": "API projeto-educacao", "version": "1.0.0" },
-  "servers": [{ "url": "http://localhost:3000" }, { "url": "https://projeto-educacao-backend.vercel.app" }],
+  "servers": [{ "url": "/", "description": "Ambiente atual" }, { "url": "http://localhost:3000", "description": "Local" }, { "url": "https://projeto-educacao-backend.vercel.app", "description": "Vercel" }],
   "paths": {
     "/aluno": {
       "get": {
