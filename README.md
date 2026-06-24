@@ -89,10 +89,18 @@ Formulário para o usuário atualizar suas informações pessoais.
   * `PUT /professor/{id}` - Atualiza os dados do professor no banco de dados.
 
 ## Para inicialização da aplicação localmente, é necessário
+Pré requisitos:
 ```
-npm 10.8.2
-node v20.19.5
+npm (versão 10.8.2 ou superior)
+node (versão v20.19.5 ou superior)
 ```
+É necessário criar um arquivo `.env` na raiz do projeto com o seguite formato:
+```
+PORT=3000
+JWT_SECRET=[Senha qualquer para JWT_SECRET]
+MONGODB_URI=[String de conexão do MongoDB Atlas]
+```
+
 As demais dependências se encontram nos respectivos `package.json`. \
 Para iniciar o _server_ local, use `npm start`.
 
