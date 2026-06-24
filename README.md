@@ -88,16 +88,20 @@ Formulário para o usuário atualizar suas informações pessoais.
   * `PUT /aluno/{id}` - Atualiza os dados do aluno no banco de dados.
   * `PUT /professor/{id}` - Atualiza os dados do professor no banco de dados.
 
-## Para inicialização da aplicação, é necessário
+## Para inicialização da aplicação localmente, é necessário
 ```
 npm 10.8.2
 node v20.19.5
 ```
 As demais dependências se encontram nos respectivos `package.json`. \
-Para iniciar o _server_, use `npm start`.
+Para iniciar o _server_ local, use `npm start`.
 
 ## Utilização
-Na aplicação, é utilizado o Browsable API Swagger para facilitar requisições no banco de dados e realizar os testes das rotas GET, POST, PUT e DELETE. Para acessar o Swagger, basta acessar o caminho `http://localhost:3000/api-docs` para teste local ou `https://projeto-educacao-backend.vercel.app/api-docs` para testes usando o Vercel. Para mais detalhes sobre o uso do Swagger, consulte a documentação. \
+Na aplicação, é utilizado o Browsable API Swagger para facilitar requisições no banco de dados e realizar os testes das rotas GET, POST, PUT e DELETE. Para acessar o Swagger, basta acessar um dos caminhos:
+* `http://localhost:3000/api-docs` para teste local;
+* `https://projeto-educacao-backend.vercel.app/api-docs` para testes usando o Vercel.
+
+Para mais detalhes sobre o uso do Swagger, consulte a documentação. \
 **Obs.:** o cluster MongoDB pode estar desativado por conta de inatividade, fazendo com que a aplicação não funcione. Nesse caso, contate um dos colaboradores para que ele seja novamente ativado.
 
 ---
