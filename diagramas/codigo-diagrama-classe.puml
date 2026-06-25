@@ -1,0 +1,531 @@
+@startuml
+skinparam classAttributeIconSize 0
+allow_mixing
+left to right direction
+
+package "Projeto"{
+  package "Model"{
+    package "Persistence Layer"{
+      Interface ProfessorDAO{
+        + salvar(professor : Professor) : boolean
+        + alterar(professor : Professor) : boolean
+        + deletar(professor : Professor) : boolean
+        + consultar() : Professor[]
+        + consultarById(professor : Professor) : Professor
+      }
+      Class ProfessorDAO_MongoDB{
+        + salvar(professor : Professor) : boolean
+        + alterar(professor : Professor) : boolean
+        + deletar(professor : Professor) : boolean
+        + consultar() : Professor[]
+        + consultarById(professor : Professor) : Professor
+      }
+      
+      Interface AlunoDAO{
+        + salvar(aluno : Aluno) : boolean
+        + alterar(aluno : Aluno) : boolean
+        + deletar(aluno : Aluno) : boolean
+        + consultar() : Aluno[]
+        + consultarById(aluno : Aluno) : Aluno
+      }
+      Class AlunoDAO_MongoDB{
+        + salvar(aluno : Aluno) : boolean
+        + alterar(aluno : Aluno) : boolean
+        + deletar(aluno : Aluno) : boolean
+        + consultar() : Aluno[]
+        + consultarById(aluno : Aluno) : Aluno
+      }
+      
+      Interface AulaDAO{
+        + salvar(aula : Aula) : boolean
+        + alterar(aula : Aula) : boolean
+        + deletar(aula : Aula) : boolean
+        + consultar() : Aula[]
+        + consultarById(aula : Aula) : Aula
+      }
+
+      Class AulaDAO_MongoDB{
+        + salvar(aula : Aula) : boolean
+        + alterar(aula : Aula) : boolean
+        + deletar(aula : Aula) : boolean
+        + consultar() : Aula[]
+        + consultarById(aula : Aula) : Aula
+      }
+      
+      Interface ExercicioDAO{
+        + salvar(exercicio : Exercicio) : boolean
+        + alterar(exercicio : Exercicio) : boolean
+        + deletar(exercicio : Exercicio) : boolean
+        + consultar() : Exercicio[]
+        + consultarById(exercicio : Exercicio) : Exercicio
+      }
+      Class ExercicioDAO_MongoDB{
+        + salvar(exercicio : Exercicio) : boolean
+        + alterar(exercicio : Exercicio) : boolean
+        + deletar(exercicio : Exercicio) : boolean
+        + consultar() : Exercicio[]
+        + consultarById(exercicio : Exercicio) : Exercicio
+      }
+      
+      Interface MateriaDAO{
+        + salvar(materia : Materia) : boolean
+        + alterar(materia : Materia) : boolean
+        + deletar(materia : Materia) : boolean
+        + consultar() : Materia[]
+        + consultarById(materia : Materia) : Materia
+      }
+      Class MateriaDAO_MongoDB{
+        + salvar(materia : Materia) : boolean
+        + alterar(materia : Materia) : boolean
+        + deletar(materia : Materia) : boolean
+        + consultar() : Materia[]
+        + consultarById(materia : Materia) : Materia
+      }
+      
+      ProfessorDAO <|.. ProfessorDAO_MongoDB
+      AlunoDAO <|.. AlunoDAO_MongoDB
+      AulaDAO <|.. AulaDAO_MongoDB
+      ExercicioDAO <|.. ExercicioDAO_MongoDB
+      MateriaDAO <|.. MateriaDAO_MongoDB
+    }
+    
+    package "Object"{
+      Class Pessoa{
+        - id : Object
+        - nome : String
+        - usuario: String
+        - email: String
+        - senha: String
+        + setId(id : Object) : boolean
+        + getId() : Object
+        + setNome(nome : String) : boolean
+        + getNome(id : Object) : String
+        + setUsuario(usuario : String) : boolean
+        + getUsuario(id : Object) : String
+        + setEmail(email : String) : boolean
+        + getEmail(id : Object) : String
+        + setSenha(senha : String) : boolean
+        + getSenha(id : Object) : String
+        + getPessoas() : Pessoa[]
+        + getPessoaById(id : Object) : Pessoa
+        + login(email_usuario: String, senha: String): boolean
+      }
+      
+      Class Professor{
+        + getProfessores() : Professor[]
+        + criarAula(aula : Aula) : boolean
+        + deletarAula() : boolean
+        + editarAula() : boolean
+        + criarExercicio(exercicio : Exercicio) : boolean
+        + deletarExercicio() : boolean
+        + editarExercicio() : boolean
+        + criarMateria(materia : Materia) : boolean
+        + deletarMateria() : boolean
+        + editarMateria() : boolean
+      }
+      
+      Class Aluno{
+        + getAlunos() : Aluno[]
+        + getAulas() : Aula[] 
+        + getExercicios() : Exercicio[] 
+      }
+      
+      Class Exercicio{
+        - id : Object
+        - titulo: String
+        - desc: String
+        - enunciado: String
+        - alternativas: String[]
+        + setId(id : Object) : boolean
+        + getId() : Object
+        + setTitulo(titulo : String) : boolean
+        + getTitulo() : String
+        + setDesc(desc : String) : boolean
+        + getDesc() : String
+        + setEnunciado(enunciado : String) : boolean
+        + getEnunciado() : String
+        + setAlternativas(alternativas : String[]) : boolean
+        + getAlternativas(id : Object) : String[]
+      }
+
+      Class Aula{
+        - id : Object
+        - titulo: String
+        - desc: String
+        - url: String
+        - explicacao: String
+        + setId(id : Object) : boolean
+        + getId() : Object
+        + setTitulo(titulo : String) : boolean
+        + getTitulo(id : Object) : String
+        + setDesc(desc : String) : boolean
+        + getDesc(id : Object) : String
+        + setUrl(url : String) : boolean
+        + getUrl(id : Object) : String
+        + setExplicacao(explicacao : String) : boolean
+        + getExplicacao(id : Object) : String
+        + getExercicios(): Exercicio[]
+      }
+      
+      Class Materia{
+        - id : Object
+        - nome: String
+        + setId(id : Object) : boolean
+        + getId() : Object
+        + setNome(nome : String) : boolean
+        + getNome(id : Object) : String
+        + getAulas(id : Object) : Aula[]
+      }
+      
+      Pessoa <|-- Professor
+      Pessoa <|-- Aluno
+      Professor "1..*" o-- "1..*" Materia
+      Professor "1..*" -- "0..*" Aula
+      Aluno "0..*" -- "0..*" Aula
+      Aluno "0..*" -- "0..*" Exercicio
+      Aula "1..1" --- "0..*" Exercicio
+      Professor "1..*" -- "0..*" Exercicio
+      Aula "1..*" o-- "1..1" Materia
+    }
+  }
+  
+  package "View"{
+    package "Routes"{
+      Interface IRoutesAluno <<Interface>>{
+        + post(uri : String, acao : Object) : Object <</aluno>>
+        + get(uri : String, acao : Object) : Object <</aluno>>
+        + get(uri : String, acao : Object) : Object <</aluno/:id>>
+        + put(uri : String, acao : Object) : Object <</aluno/:id>>
+        + delete(uri : String, acao : Object) : Object <</aluno/:id>>
+      }
+      
+      Interface IRoutesProfessor <<Interface>>{
+        + post(uri : String, acao : Object) : Object <</professor>>
+        + get(uri : String, acao : Object) : Object <</professor>>
+        + get(uri : String, acao : Object) : Object <</professor/:id>>
+        + put(uri : String, acao : Object) : Object <</professor/:id>>
+        + delete(uri : String, acao : Object) : Object <</professor/:id>>
+      }
+    
+      Interface IRoutesAula <<Interface>>{
+        + post(uri : String, acao : Object) : Object <</aula>>
+        + get(uri : String, acao : Object) : Object <</aula>>
+        + get(uri : String, acao : Object) : Object <</aula/:id>>
+        + put(uri : String, acao : Object) : Object <</aula/:id>>
+        + delete(uri : String, acao : Object) : Object <</aula/:id>>
+      }
+    
+      Interface IRoutesExercicio <<Interface>>{
+        + post(uri : String, acao : Object) : Object <</exercicio>>
+        + get(uri : String, acao : Object) : Object <</exercicio>>
+        + get(uri : String, acao : Object) : Object <</exercicio/:id>>
+        + put(uri : String, acao : Object) : Object <</exercicio/:id>>
+        + delete(uri : String, acao : Object) : Object <</exercicio/:id>>
+      }
+    
+      Interface IRoutesMateria <<Interface>>{
+        + post(uri : String, acao : Object) : Object <</materia>>
+        + get(uri : String, acao : Object) : Object <</materia>>
+        + get(uri : String, acao : Object) : Object <</materia/:id>>
+        + put(uri : String, acao : Object) : Object <</materia/:id>>
+        + delete(uri : String, acao : Object) : Object <</materia/:id>>
+      }
+    
+      Class RoutesAluno{
+        + post(uri : String, acao : Object) : Object <</aluno>>
+        + get(uri : String, acao : Object) : Object <</aluno>>
+        + get(uri : String, acao : Object) : Object <</aluno/:id>>
+        + put(uri : String, acao : Object) : Object <</aluno/:id>>
+        + delete(uri : String, acao : Object) : Object <</aluno/:id>>
+      }
+      
+      Class RoutesProfessor{
+        + post(uri : String, acao : Object) : Object <</professor>>
+        + get(uri : String, acao : Object) : Object <</professor>>
+        + get(uri : String, acao : Object) : Object <</professor/:id>>
+        + put(uri : String, acao : Object) : Object <</professor/:id>>
+        + delete(uri : String, acao : Object) : Object <</professor/:id>>
+      }
+      
+      Class RoutesAula{
+        + post(uri : String, acao : Object) : Object <</aula>>
+        + get(uri : String, acao : Object) : Object <</aula>>
+        + get(uri : String, acao : Object) : Object <</aula/:id>>
+        + put(uri : String, acao : Object) : Object <</aula/:id>>
+        + delete(uri : String, acao : Object) : Object <</aula/:id>>
+      }
+    
+      Class RoutesExercicio{
+        + post(uri : String, acao : Object) : Object <</exercicio>>
+        + get(uri : String, acao : Object) : Object <</exercicio>>
+        + get(uri : String, acao : Object) : Object <</exercicio/:id>>
+        + put(uri : String, acao : Object) : Object <</exercicio/:id>>
+        + delete(uri : String, acao : Object) : Object <</exercicio/:id>>
+      }
+    
+      Class RoutesMateria{
+        + post(uri : String, acao : Object) : Object <</materia>>
+        + get(uri : String, acao : Object) : Object <</materia>>
+        + get(uri : String, acao : Object) : Object <</materia/:id>>
+        + put(uri : String, acao : Object) : Object <</materia/:id>>
+        + delete(uri : String, acao : Object) : Object <</materia/:id>>
+      }
+      
+      IRoutesProfessor <|.. RoutesProfessor
+      IRoutesAluno <|.. RoutesAluno
+      IRoutesAula <|.. RoutesAula
+      IRoutesExercicio <|.. RoutesExercicio
+      IRoutesMateria <|.. RoutesMateria
+    }
+    package "DTO"{
+      ' Json do Aluno '
+      json "POST_/aluno_REQ" as salvarAlunoReq {
+        "nome": "",
+        "usuario" : "",
+        "email" : "",
+        "senha" : ""
+      }
+      json "POST_/aluno_RES" as salvarAlunoRes {
+        "msgcode" : "",
+        "aluno" : "{}"
+      }
+      json "GET_/aluno_REQ" as buscarAlunoReq {
+      }
+      json "GET_/aluno_RES" as buscarAlunoRes {
+       "msgcode" : "",
+       "alunos" : "[]"
+      }
+      json "PUT_/aluno_REQ" as alterarAlunoReq {
+        "nome": "",
+        "usuario" : "",
+        "email" : "",
+        "senha" : ""
+      }
+      json "PUT_/aluno_RES" as alterarAlunoRes {
+       "msgcode" : "",
+       "aluno" : "{}"
+      }
+      json "DELETE_/aluno_REQ" as deletarAlunoReq {
+        "id" : "0"
+      }
+      json "DELETE_/aluno_RES" as deletarAlunoRes {
+        "msgcode" : ""
+      }
+      
+      ' Json do Professor '
+      json "POST_/professor_REQ" as salvarProfessorReq {
+        "nome": "",
+        "usuario" : "",
+        "email" : "",
+        "senha" : ""
+      }
+      json "POST_/professor_RES" as salvarProfessorRes {
+        "msgcode" : "",
+        "professor" : "{}"
+      }
+      json "GET_/professor_REQ" as buscarProfessorReq {
+      }
+      json "GET_/professor_RES" as buscarProfessorRes {
+       "msgcode" : "",
+       "professores" : "[]"
+      }
+      json "PUT_/professor_REQ" as alterarProfessorReq {
+        "nome": "",
+        "usuario" : "",
+        "email" : "",
+        "senha" : ""
+      }
+      json "PUT_/professor_RES" as alterarProfessorRes {
+       "msgcode" : "",
+       "professor" : "{}"
+      }
+      json "DELETE_/professor_REQ" as deletarProfessorReq {
+        "id" : "0"
+      }
+      json "DELETE_/professor_RES" as deletarProfessorRes {
+        "msgcode" : ""
+      }
+      
+      ' Json de Aula '
+      json "POST_/aula_REQ" as salvarAulaReq {
+        "titulo" : "",
+        "desc" : "",
+        "uri" : "",
+        "explicacao" : ""
+      }
+      json "POST_/aula_RES" as salvarAulaRes {
+        "msgcode" : "",
+        "aula" : "{}"
+      }
+      json "GET_/aula_REQ" as buscarAulaReq {
+      }
+      json "GET_/aula_RES" as buscarAulaRes {
+       "msgcode" : "",
+       "aulas" : "[]"
+      }
+      json "PUT_/aula_REQ" as alterarAulaReq {
+        "titulo" : "",
+        "desc" : "",
+        "uri" : "",
+        "explicacao" : ""
+      }
+      json "PUT_/aula_RES" as alterarAulaRes {
+       "msgcode" : "",
+       "aula" : "{}"
+      }
+      json "DELETE_/aula_REQ" as deletarAulaReq {
+        "id" : "0"
+      }
+      json "DELETE_/aula_RES" as deletarAulaRes {
+        "msgcode" : ""
+      }
+      
+      ' Json de Exercicio '
+      json "POST_/exercicio_REQ" as salvarExercicioReq {
+        "alternativas" : "[]"
+      }
+      json "POST_/exercicio_RES" as salvarExercicioRes {
+        "msgcode" : "",
+        "exercicio" : "{}"
+      }
+      json "GET_/exercicio_REQ" as buscarExercicioReq {
+      }
+      json "GET_/exercicio_RES" as buscarExercicioRes {
+       "msgcode" : "",
+       "exercicios" : "[]"
+      }
+      json "PUT_/exercicio_REQ" as alterarExercicioReq {
+        "alternativas" : "[]"
+      }
+      json "PUT_/exercicio_RES" as alterarExercicioRes {
+        "msgcode" : "",
+        "exercicio" : "{}"
+      }
+      json "DELETE_/exercicio_REQ" as deletarExercicioReq {
+        "id" : "0"
+      }
+      json "DELETE_/exercicio_RES" as deletarExercicioRes {
+        "msgcode" : ""
+      }
+      
+      ' Json de Materia '
+      json "POST_/materia_REQ" as salvarMateriaReq {
+        "nome" : ""
+      }
+      json "POST_/materia_RES" as salvarMateriaRes {
+        "msgcode" : "",
+        "materia" : "{}"
+      }
+      json "GET_/materia_REQ" as buscarMateriaReq {
+      }
+      json "GET_/materia_RES" as buscarMateriaRes {
+        "msgcode" : "",
+        "materias" : "[]"
+      }
+      json "PUT_/materia_REQ" as alterarMateriaReq {
+        "nome" : ""
+      }
+      json "PUT_/materia_RES" as alterarMateriaRes {
+        "msgcode" : "",
+        "materia" : "{}"
+      }
+      json "DELETE_/materia_REQ" as deletarMateriaReq {
+        "id" : "0"
+      }
+      json "DELETE_/materia_RES" as deletarMateriaRes {
+        "msgcode" : ""
+      }
+    }
+  }
+  
+  package "Controller"{
+    Interface IProfessorController{
+      + salvar(req : Object, res : Object) : Object
+      + alterar(req : Object, res : Object) : Object
+      + deletar(req : Object, res : Object) : Object
+      + consultar(req : Object, res : Object) : Object
+      + consultarById(req : Object, res : Object) : Object
+    }
+    
+    Interface IAlunoController{
+      + salvar(req : Object, res : Object) : Object
+      + alterar(req : Object, res : Object) : Object
+      + deletar(req : Object, res : Object) : Object
+      + consultar(req : Object, res : Object) : Object
+      + consultarById(req : Object, res : Object) : Object
+    }
+    
+    Interface IAulaController{
+      + salvar(req : Object, res : Object) : Object
+      + alterar(req : Object, res : Object) : Object
+      + deletar(req : Object, res : Object) : Object
+      + consultar(req : Object, res : Object) : Object
+      + consultarById(req : Object, res : Object) : Object
+    }
+    
+    Interface IExercicioController{
+      + salvar(req : Object, res : Object) : Object
+      + alterar(req : Object, res : Object) : Object
+      + deletar(req : Object, res : Object) : Object
+      + consultar(req : Object, res : Object) : Object
+      + consultarById(req : Object, res : Object) : Object
+    }
+    
+    Interface IMateriaController{
+      + salvar(req : Object, res : Object) : Object
+      + alterar(req : Object, res : Object) : Object
+      + deletar(req : Object, res : Object) : Object
+      + consultar(req : Object, res : Object) : Object
+      + consultarById(req : Object, res : Object) : Object
+    }
+    
+    Class ProfessorController{
+      + salvar(req : Object, res : Object) : Object
+      + alterar(req : Object, res : Object) : Object
+      + deletar(req : Object, res : Object) : Object
+      + consultar(req : Object, res : Object) : Object
+      + consultarById(req : Object, res : Object) : Object
+    }
+    
+    Class AlunoController{
+      + salvar(req : Object, res : Object) : Object
+      + alterar(req : Object, res : Object) : Object
+      + deletar(req : Object, res : Object) : Object
+      + consultar(req : Object, res : Object) : Object
+      + consultarById(req : Object, res : Object) : Object
+    }
+    
+    Class AulaController{
+      + salvar(req : Object, res : Object) : Object
+      + alterar(req : Object, res : Object) : Object
+      + deletar(req : Object, res : Object) : Object
+      + consultar(req : Object, res : Object) : Object
+      + consultarById(req : Object, res : Object) : Object
+    }
+    
+    Class ExercicioController{
+      + salvar(req : Object, res : Object) : Object
+      + alterar(req : Object, res : Object) : Object
+      + deletar(req : Object, res : Object) : Object
+      + consultar(req : Object, res : Object) : Object
+      + consultarById(req : Object, res : Object) : Object
+    }
+    
+    Class MateriaController{
+      + salvar(req : Object, res : Object) : Object
+      + alterar(req : Object, res : Object) : Object
+      + deletar(req : Object, res : Object) : Object
+      + consultar(req : Object, res : Object) : Object
+      + consultarById(req : Object, res : Object) : Object
+    }
+    
+    IProfessorController <|.. ProfessorController
+    IAlunoController <|.. AlunoController
+    IAulaController <|.. AulaController
+    IExercicioController <|.. ExercicioController
+    IMateriaController <|.. MateriaController
+  }
+}
+
+ 
+@enduml
